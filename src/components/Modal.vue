@@ -13,7 +13,10 @@
         el.name + " || " + el.phone
       }}</option>
     </select>
-    <button class="btnSave" @click="passForm(userName, userPhone, userChief)">
+    <button
+      class="btnSave"
+      @click="validateForm(userName, userPhone, userChief)"
+    >
       Сохранить
     </button>
   </div>
@@ -38,6 +41,12 @@ export default {
         parent: chief || ''
       }
       this.$emit('newPerson', newPerson)
+    },
+    validateForm (name, phone, chief) {
+      if (name.trim() && phone.trim()) {
+        this.passForm(name, phone, chief)
+      }
+      return null
     },
     closeModal () {
       this.$emit('closeModal', false)

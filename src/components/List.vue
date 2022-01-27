@@ -1,10 +1,10 @@
 <template>
   <div class="list">
     <div class="list__header">
-      <div class="header__name border" @click="sortWithKey(userList, 'name')">
+      <div class="header__name border" @click="sortWithKey(userList, 'name', sortOrder)">
         Имя
       </div>
-      <div class="header__phone border" @click="sortWithKey(userList, 'phone')">
+      <div class="header__phone border" @click="sortWithKey(userList, 'phone', sortOrder)">
         Телефон
       </div>
     </div>
@@ -26,7 +26,12 @@ export default {
   name: 'List',
   props: ['userList'],
   data () {
-    return {}
+    return {
+      sortOrder: {
+        name: true,
+        phone: true
+      }
+    }
   },
   methods: {
     hierarchy: (
@@ -45,29 +50,25 @@ export default {
       })
       return tree
     },
-    sortWithKey (arr, key) {
-      if (key === 'name') {
-        arr.sort(function (a, b) {
-          if (a.name > b.name) {
+    sortWithKey (arr, key, order) {
+      arr.sort(function (a, b) {
+        if (a[key] > b[key]) {
+          if (order[key]) {
             return 1
-          }
-          if (a.name < b.name) {
+          } else {
             return -1
           }
-          return 0
-        })
-      }
-      if (key === 'phone') {
-        arr.sort(function (a, b) {
-          if (a.phone > b.phone) {
+        }
+        if (a[key] < b[key]) {
+          if (order[key]) {
+            return -1
+          } else {
             return 1
           }
-          if (a.phone < b.phone) {
-            return -1
-          }
-          return 0
-        })
-      }
+        }
+        return 0
+      })
+      order[key] = !order[key]
     }
   }
 }
